@@ -1,4 +1,4 @@
-// test comment
+// test comment 2
 const {MongoClient,ObjectID} = require('mongodb');
 
 var id = new ObjectID();
@@ -53,10 +53,18 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp',(err,db)=>{
   //   console.log('unable to obtain ToDos collection count',err);
   // });
 
-  db.collection('Users').find({name:'Joselito Pe'}).toArray().then((docs)=>{
-    console.log('Users collection having a specific name:',docs);
-  },(err)=>{
-    console.log('unable to obtain Users collection',err);
+  // db.collection('Users').find({name:'Joselito Pe'}).toArray().then((docs)=>{
+  //   console.log('Users collection having a specific name:',docs);
+  // },(err)=>{
+  //   console.log('unable to obtain Users collection',err);
+  // });
+
+  db.collection('Users').deleteMany({name:'Joselito Pe'}).then((result)=>{
+    console.log('result for deleteMany:',result);
+  });
+
+  db.collection('Users').findOneAndDelete({_id:new ObjectID('59f30fabdd616709ac2ea8a5')}).then((result)=>{
+    console.log('result for findOneAndDelete:',result);
   });
 
   db.close();
