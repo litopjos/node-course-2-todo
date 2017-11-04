@@ -10,6 +10,7 @@ var app = express();
 app.use(bodyparser.json());
 app.post("/todos",  (req,res)=>{
   console.log(req.body);
+  console.log('hey there');
 
   var todo = new ToDo({
     text: req.body.text
@@ -29,3 +30,5 @@ app.post("/todos",  (req,res)=>{
 app.listen(3000, ()=>{
   console.log ('started on port 3000');
 })
+
+module.exports = {app};
