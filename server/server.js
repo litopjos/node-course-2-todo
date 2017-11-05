@@ -8,6 +8,7 @@ var {ToDo} = require ('./model/todo.js');
 var app = express();
 
 app.use(bodyparser.json());
+
 app.post("/todos",  (req,res)=>{
   console.log(req.body);
   console.log('hey there');
@@ -26,6 +27,20 @@ app.post("/todos",  (req,res)=>{
     }
   );
 });
+
+app.get("/todos", (req,res)=> {
+  ToDo.find().then(
+    (todos)=>{
+      res.send({todos});
+    },
+
+    (e)=>{
+      res.status(400).send(e);
+    }
+
+  );
+
+})
 
 app.listen(3000, ()=>{
   console.log ('started on port 3000');
