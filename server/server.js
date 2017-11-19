@@ -18,6 +18,7 @@ var {ObjectID} = require('mongodb');
 var {mongoose} = require ('./db/mongoose.js');
 var {User} = require ('./model/user.js');
 var {ToDo} = require ('./model/todo.js');
+var {authenticate} = require ('./authenticate/authenticate.js');
 
 const port = process.env.PORT;
 
@@ -25,7 +26,7 @@ var app = express();
 
 app.use(bodyparser.json());
 
-app.post("/todos",  (req,res)=>{
+app.post("/todos",(req,res)=>{
   console.log(req.body);
   console.log('hey there');
 
@@ -44,7 +45,7 @@ app.post("/todos",  (req,res)=>{
   );
 });
 
-app.get("/todos", (req,res)=> {
+app.get("/todos", authenticate,(req,res)=> {
   ToDo.find().then(
     (todos)=>{
       res.send({todos});
@@ -142,6 +143,17 @@ app.post('/users',(req,res)=>{
       res.status(405).send(e);
     });
 });
+
+
+// Returns limited user credentials given a JWT token.
+// Private route.
+app.get('/users/me', authenticate,(req,res)=>{
+  console.log('req validated successfully');
+  console.log ('Found user:', req.user);
+  res.send(req.user);
+
+});
+
 
 app.listen(port, ()=>{
   console.log (`started and listening on port ${port}`);
